@@ -52,4 +52,7 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.OK).body(userService.updateUser(id,updateUserDto));
     }
 
+//    get orders for the users
+
+
 }

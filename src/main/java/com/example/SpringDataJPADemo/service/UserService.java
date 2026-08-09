@@ -3,9 +3,11 @@ package com.example.SpringDataJPADemo.service;
 import com.example.SpringDataJPADemo.dto.CreateUserDto;
 import com.example.SpringDataJPADemo.dto.UserDto;
 import com.example.SpringDataJPADemo.entities.User;
+import com.example.SpringDataJPADemo.exception.UserNotFoundException;
 import com.example.SpringDataJPADemo.repository.UserRepository;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
+import org.hibernate.service.UnknownServiceException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -53,7 +55,12 @@ public class UserService {
 
 
     public UserDto getUserById(Long id) {
-        User user = userRepository.findById(id).orElseThrow();//what if data is not present it should through some exception
+        //        if(userRepository.findById(id).isEmpty()){
+//            throw new UserNotFoundException("User not found with id: "+ id);
+//        naive way to throw the exception
+//        }
+        User user = userRepository.findById(id).
+                orElseThrow(() -> new UserNotFoundException("User not found with id: "+ id));;//what if data is not present it should through some exception
 //        we will be studying letter on
         return new UserDto(user.getId(),user.getName(),user.getEmail());
     }
@@ -102,6 +109,7 @@ SET name='Rahul',
 WHERE id=1;
 * */
     public UserDto updateUser(Long id, CreateUserDto updateUserDto) {
+
         User user = userRepository.findById(id).orElseThrow();
         user.setName(updateUserDto.getName());
         user.setEmail(updateUserDto.getEmail());

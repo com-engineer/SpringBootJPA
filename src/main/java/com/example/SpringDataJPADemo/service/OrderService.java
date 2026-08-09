@@ -5,8 +5,10 @@ import com.example.SpringDataJPADemo.dto.OrderDto;
 import com.example.SpringDataJPADemo.dto.UserDto;
 import com.example.SpringDataJPADemo.entities.Order;
 import com.example.SpringDataJPADemo.entities.User;
+import com.example.SpringDataJPADemo.exception.UserNotFoundException;
 import com.example.SpringDataJPADemo.repository.OrderRepository;
 import com.example.SpringDataJPADemo.repository.UserRepository;
+import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -19,8 +21,15 @@ public class OrderService {
     private final OrderRepository orderRepository;
     private final UserRepository userRepository;
 
+    @Transactional
     public OrderDto createOrder(Long userId, CreateOrderDto createOrderDto){
-        User user = userRepository.findById(userId).orElseThrow();
+        /*
+        here Transactional handles to trx first check whether user exist or not then save the
+        created order in the database it ensure atomicity here
+         */
+
+        User user = userRepository.findById(userId).
+                orElseThrow(() -> new UserNotFoundException("User not found with id: "+ userId));
         Order order = new Order();
         order.setUser(user);
         order.setProductName(createOrderDto.getProductName());

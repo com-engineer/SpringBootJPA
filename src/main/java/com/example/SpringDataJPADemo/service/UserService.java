@@ -6,6 +6,10 @@ import com.example.SpringDataJPADemo.entities.User;
 import com.example.SpringDataJPADemo.repository.UserRepository;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
@@ -104,6 +108,16 @@ WHERE id=1;
         return new UserDto(user.getId(),user.getName(),user.getEmail());
     }
 
+    public List<UserDto> getUsersPaginated(int page, int pageSize, String direction, String sortBy) {
+        Sort sort;
+        sort = direction.equalsIgnoreCase("asc") ? Sort.by(sortBy).ascending():
+                Sort.by(sortBy).descending();
+        Pageable pageable = PageRequest.of(page,pageSize,sort);
+        Page<User> usersPage = userRepository.findAll(pageable);
+        List<UserDto> userDtoList = new ArrayList<>();
 
+        usersPage.forEach(user -> userDtoList.add(new UserDto(user.getId(),user.getName(),user.getEmail())));
+        return userDtoList;
+    }
 //    public ResponseEntity<UserDto>
 }

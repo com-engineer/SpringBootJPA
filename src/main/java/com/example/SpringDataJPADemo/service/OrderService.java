@@ -2,6 +2,7 @@ package com.example.SpringDataJPADemo.service;
 
 import com.example.SpringDataJPADemo.dto.CreateOrderDto;
 import com.example.SpringDataJPADemo.dto.OrderDto;
+import com.example.SpringDataJPADemo.dto.UserDto;
 import com.example.SpringDataJPADemo.entities.Order;
 import com.example.SpringDataJPADemo.entities.User;
 import com.example.SpringDataJPADemo.repository.OrderRepository;
@@ -24,14 +25,16 @@ public class OrderService {
         order.setUser(user);
         order.setProductName(createOrderDto.getProductName());
         Order savedOrder = orderRepository.save(order);
-        return new OrderDto(savedOrder.getId(),savedOrder.getProductName(),savedOrder.getUser());
+        return new OrderDto(savedOrder.getId(),savedOrder.getProductName(),
+                new UserDto(savedOrder.getUser().getId(),savedOrder.getUser().getName(),savedOrder.getUser().getEmail()));
     }
 
     public List<OrderDto> getOrdersByUserId(Long userId) {
         List<Order> orders = orderRepository.findByUserId(userId);
         List<OrderDto> orderDtos = new ArrayList<>();
         orders.forEach(order -> {
-            OrderDto orderDto = new OrderDto(order.getId(),order.getProductName(),order.getUser());
+            OrderDto orderDto = new OrderDto(order.getId(),order.getProductName(),
+                    new UserDto(order.getUser().getId(),order.getUser().getName(),order.getUser().getEmail()));
             orderDtos.add(orderDto);
         });
         return orderDtos;

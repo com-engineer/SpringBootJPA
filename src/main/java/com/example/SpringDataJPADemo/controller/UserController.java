@@ -17,11 +17,12 @@ import java.util.List;
 public class UserController {
     private final UserService userService;
 
-    @PostMapping
-    public ResponseEntity<UserDto> createUser(@Valid @RequestBody CreateUserDto createUserDto){
-        return ResponseEntity.status(HttpStatus.CREATED).body(userService.saveUser(createUserDto));
-
-    }
+//    @PostMapping
+////    without using jwt
+//    public ResponseEntity<UserDto> createUser(@Valid @RequestBody CreateUserDto createUserDto){
+//        return ResponseEntity.status(HttpStatus.CREATED).body(userService.saveUser(createUserDto));
+//
+//    }
 
     @GetMapping("/users")
     public ResponseEntity<List<UserDto>> getUsers(){

@@ -24,7 +24,13 @@ public class User {//User is a reserved word in hibernate ->"unquoted identifier
     @GeneratedValue(strategy = GenerationType.IDENTITY)//tells Hibernate:"Don't ask me for the ID. Let the database generate it automatically when a new row is inserted."
     private Long id;
     private String name;
+    @Column(unique = true,nullable = false)//while using jwt
     private String email;
+    //while using jwt add new fields
+    @Column(nullable = false)
+    private String  password;
+    @Enumerated(EnumType.STRING)
+    private Role role;
 
 //    @OneToMany
 //    private List<Order> orders;

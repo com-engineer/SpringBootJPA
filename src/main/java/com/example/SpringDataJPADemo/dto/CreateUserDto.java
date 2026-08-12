@@ -12,11 +12,14 @@ import lombok.Setter;
 public class CreateUserDto {
     @NotBlank
     @NonNull
-    @Size(max = 5)
+    @Size(max = 100)
     private  String name;
 
     @NotBlank
     @NonNull
     @Email
     private  String email;
+    @NotBlank
+    @NonNull
+    private String password;
 }

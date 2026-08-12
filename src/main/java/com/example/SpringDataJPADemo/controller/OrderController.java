@@ -14,7 +14,7 @@ import java.util.List;
 @RestController
 @AllArgsConstructor
 //@RequestMapping("/api/v1/orders")//in normal scenerio
-@RequestMapping("/api/v1/users/{userId}/orders")//    considering the fact that order cannot exits without users
+//@RequestMapping("/api/v1/users/{userId}/orders")//without jwt //    considering the fact that order cannot exits without users
 public class OrderController {
     private final OrderService orderService;
 

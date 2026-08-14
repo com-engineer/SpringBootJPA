@@ -1,4 +1,5 @@
 package com.example.SpringBootJWT.security;
+import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.beans.factory.annotation.Value;
@@ -26,5 +27,13 @@ public class JwtService {
                 .expiration(new Date(System.currentTimeMillis()+1000+60+15))
                 .signWith(getKey())
                 .compact();
+    }
+
+    public Claims parseToken(String token){
+        return Jwts.parser()
+                .verifyWith(getKey())//first verify the token using secret key before parsing it
+                .build()
+                .parseSignedClaims(token)
+                .getPayload();//"payload/claims is the main thing which contain the userdetails"
     }
 }

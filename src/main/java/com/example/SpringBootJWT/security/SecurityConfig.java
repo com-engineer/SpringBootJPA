@@ -31,16 +31,27 @@ public class SecurityConfig {
 
         httpSecurity.csrf(csrf -> csrf.disable())
                 .sessionManagement(s -> s.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-//                This tells Spring:
-//
-//Do not create or use a server-side session to remember the logged-in user.
+//                This tells Spring:Do not create or use a server-side session to remember the logged-in user.
                 .authorizeHttpRequests(auth ->
                         auth.requestMatchers("/api/v1/auth/**").permitAll()
-                                .requestMatchers(HttpMethod.POST,"/api/v1/users").permitAll()
-                                .requestMatchers("/api/v1/users/*/orders/**").hasAnyRole("ADMIN","USER")
+
+                                //USER
+                                .requestMatchers("/api/v1/users/me").hasRole("USER")
+
+                                //ADMIN
                                 .requestMatchers("/api/v1/users/**").hasRole("ADMIN")
-                .anyRequest().authenticated())
-                .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
+
+                                //ORDERS USER
+                                .requestMatchers(HttpMethod.POST,"/api/v1/orders").hasRole("USER")
+                                .requestMatchers("/api/v1/orders/my/**").hasRole("USER")
+
+                                //ORDERS ADMIN
+                                .requestMatchers(HttpMethod.GET,"/api/v1/orders").hasRole("ADMIN")
+                                .requestMatchers("/api/v1/orders/user/**").hasRole("ADMIN")
+                                .requestMatchers(HttpMethod.DELETE,"/api/v1/orders/**").hasRole("ADMIN")
+
+                                .anyRequest().authenticated())
+                    .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
 
         return httpSecurity.build();
     }

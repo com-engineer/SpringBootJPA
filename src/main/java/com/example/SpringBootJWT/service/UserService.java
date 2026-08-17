@@ -28,6 +28,13 @@ public class UserService {
         String email = Objects.requireNonNull(SecurityContextHolder.getContext()
                         .getAuthentication())
                 .getName();
+
+        //debug
+        System.out.println("getLoggedInUser: "+ email);
+        System.out.println("getLoggedInUser: "+ SecurityContextHolder.getContext());
+        System.out.println("getLoggedInUser: "+ SecurityContextHolder.getContext().getAuthentication());
+        //debug
+
         return userRepository.findByEmail(email)
                 .orElseThrow(() -> new UserNotFoundException("User not found"));
     }
@@ -41,6 +48,11 @@ public class UserService {
 
     public UserDto getCurrentUser() {
         User user = getLoggedInUser();
+
+        //debug
+        System.out.println("getCurrentUser: "+user);
+        //debug
+
         return map(user);
     }
 
@@ -52,14 +64,14 @@ public class UserService {
     }
 
     public List<UserDto> getUsers() {
-        //        List<User> users = userRepository.findAll();
-        //        List<UserDto> userDtoList = new ArrayList<>();
-        //        for(User user: users){
-        //            userDtoList.add(map(user));
-        //        }
-        //        return userDtoList;
+//                List<User> users = userRepository.findAll();
+//                List<UserDto> userDtoList = new ArrayList<>();
+//                for(User user: users){
+//                    userDtoList.add(map(user));
+//                }
+//                return userDtoList;
 
-        // another way to return
+//         another way to return
         return userRepository.findAll()
                 .stream()
                 .map(this::map)

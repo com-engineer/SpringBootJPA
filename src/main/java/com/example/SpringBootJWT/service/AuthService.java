@@ -41,7 +41,19 @@ public class AuthService {
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(loginDto.getEmail(),loginDto.getPassword())
         );
+
+        //debug
+        System.out.println("authentication: "+authentication);
+        System.out.println("authentication: "+authentication.getPrincipal());
+        System.out.println("authentication: "+authentication.getAuthorities());
+        //debug
+
         String jwtToken = jwtService.generateJwtToken((UserDetails) Objects.requireNonNull(authentication.getPrincipal()));
+
+        //debug
+        System.out.println("CreatedjwtToken: "+jwtToken);
+        //debug
+
         return new LoginResponseDto(jwtToken);
     }
 }

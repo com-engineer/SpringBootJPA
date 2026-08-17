@@ -16,10 +16,16 @@ public class CustomUserDetailsService implements UserDetailsService {
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException{
         com.example.SpringBootJWT.entities.User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new UserNotFoundException("User not found with email: "+ email));
+
+        //debug
+        System.out.println("UserDetailsService: "+user);
+        System.out.println("email: "+user.getEmail()+" "+"password: "+user.getPassword()+" "+user.getRole()+" "+user.getRole().name());
+        //debug
+
         return User.builder()
                 .username(user.getEmail())
                 .password(user.getPassword())
-                .roles(user.getName())
+                .roles(user.getRole().name())
                 .build();
     }
 }

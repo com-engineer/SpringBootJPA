@@ -25,6 +25,11 @@ public class AuthController {
     }
     @PostMapping("/login")
     public ResponseEntity<LoginResponseDto> login(@RequestBody LoginDto loginDto){
+
+        //debug
+        System.out.println("login(@RequestBody: "+loginDto);
+        //debug
+
         return ResponseEntity.status(HttpStatus.OK).body(authService.login(loginDto));
     }
 

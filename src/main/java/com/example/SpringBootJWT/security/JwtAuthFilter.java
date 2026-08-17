@@ -25,6 +25,12 @@ public class JwtAuthFilter extends OncePerRequestFilter {//it filter the request
     protected void doFilterInternal(HttpServletRequest request,
                                     HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
+
+        //debug
+        System.out.println("JWT Filter running for: "
+                + request.getRequestURI());
+        //debug
+
         String header = request.getHeader("Authorization");
         if(header == null || !header.startsWith("Bearer ")){
             //here what we want is not present then there is no point of validating the token
@@ -46,9 +52,15 @@ public class JwtAuthFilter extends OncePerRequestFilter {//it filter the request
             UsernamePasswordAuthenticationToken auth =
                     new UsernamePasswordAuthenticationToken(user,null,user.getAuthorities());
 
+            //debug
+            System.out.println("Email: " + email);
+            System.out.println("Authorities: " + user.getAuthorities());
+            //debug
+
             SecurityContextHolder.getContext().setAuthentication(auth);
         }catch (Exception exception){
             response.setStatus(HttpStatus.UNAUTHORIZED.value());
+            return;
         }
 
         filterChain.doFilter(request,response);

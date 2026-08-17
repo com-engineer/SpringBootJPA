@@ -12,18 +12,45 @@ import java.util.List;
 
 @RestController
 @AllArgsConstructor
-//@RequestMapping("/api/v1/orders")//in normal scenerio
+@RequestMapping("/api/v1/orders")//with jwt
 //@RequestMapping("/api/v1/users/{userId}/orders")//without jwt //    considering the fact that order cannot exits without users
 public class OrderController {
     private final OrderService orderService;
 
+    //USER -> create
     @PostMapping
-    public ResponseEntity<OrderDto> createOrder(@PathVariable Long userId, @RequestBody CreateOrderDto createOrderDto){
-        return ResponseEntity.status(HttpStatus.CREATED).body(orderService.createOrder(userId,createOrderDto));
+    public ResponseEntity<OrderDto> createOrder(@RequestBody CreateOrderDto createOrderDto){
+        return ResponseEntity.status(HttpStatus.CREATED).body(orderService.createOrder(createOrderDto));
     }
 
-    @GetMapping
-    public ResponseEntity<List<OrderDto>> getOrdersByUserId(@PathVariable Long userId){
-        return ResponseEntity.status(HttpStatus.OK).body(orderService.getOrdersByUserId(userId));
+    //USER -> my orders
+    @GetMapping("/my")
+    public ResponseEntity<List<OrderDto>> getMyOrders(){
+        return ResponseEntity.status(HttpStatus.OK).body(orderService.getMyOrders());
+    }
+
+    //USER -> specific order
+    @GetMapping("/my/{id}")
+    public ResponseEntity<OrderDto> getMyOrder(@PathVariable Long id){
+        return ResponseEntity.status(HttpStatus.OK).body(orderService.getMyOrder(id));
+    }
+
+    //ADMIN -> all orders
+    @GetMapping()
+    public ResponseEntity<List<OrderDto>> getAllOrders(){
+        return ResponseEntity.status(HttpStatus.OK).body(orderService.getAllOrders());
+    }
+
+    //ADMIN -> orders by user
+    @GetMapping("/user/{id}")
+    public ResponseEntity<List<OrderDto>> getOrdersByUser(@PathVariable Long id){
+        return ResponseEntity.status(HttpStatus.OK).body(orderService.getOrdersByUser(id));
+    }
+
+    //ADMIN -> delete
+    @DeleteMapping("/{id}")
+    public ResponseEntity<List<OrderDto>> deleteOrder(@PathVariable Long id){
+        orderService.deleteOrder(id);
+        return ResponseEntity.noContent().build();
     }
 }

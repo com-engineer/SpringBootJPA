@@ -1,4 +1,4 @@
-package com.example.SpringBootJWT.dto;
+package com.example.RedisForOrderManagementSystem.dto;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -19,6 +19,8 @@ public class CreateUserDto {
     @NonNull
     @Email
     private  String email;
+
+
     @NotBlank
     @NonNull
     private String password;

@@ -1,8 +1,10 @@
-package com.example.SpringBootJWT.controller;
+package com.example.RedisForOrderManagementSystem.controller;
 
-import com.example.SpringBootJWT.dto.CreateOrderDto;
-import com.example.SpringBootJWT.dto.OrderDto;
-import com.example.SpringBootJWT.service.OrderService;
+
+import com.example.RedisForOrderManagementSystem.dto.CreateOrderDto;
+import com.example.RedisForOrderManagementSystem.dto.OrderDto;
+import com.example.RedisForOrderManagementSystem.service.OrderService;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,10 +21,17 @@ public class OrderController {
 
     //USER -> create
     @PostMapping
-    public ResponseEntity<OrderDto> createOrder(@RequestBody CreateOrderDto createOrderDto){
-        return ResponseEntity.status(HttpStatus.CREATED).body(orderService.createOrder(createOrderDto));
+    public ResponseEntity<OrderDto> createOrder(@Valid @RequestBody CreateOrderDto dto){
+        return ResponseEntity.status(HttpStatus.CREATED).body(orderService.createOrder(dto));
+    }
+    /*
+      // USER -> create
+    @PostMapping
+    public ResponseEntity<OrderDto> createOrder(@Valid @RequestBody CreateOrderDto dto) {
+        return ResponseEntity.ok(orderService.createOrder(dto));
     }
 
+     */
     //USER -> my orders
     @GetMapping("/my")
     public ResponseEntity<List<OrderDto>> getMyOrders(){

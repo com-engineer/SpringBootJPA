@@ -1,6 +1,6 @@
-package com.example.SpringBootJWT.exception;
+package com.example.RedisForOrderManagementSystem.exception;
 
-import com.example.SpringBootJWT.dto.ErrorResponseDto;
+import com.example.RedisForOrderManagementSystem.dto.ErrorResponseDto;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;

@@ -1,4 +1,4 @@
-package com.example.SpringBootJWT.dto;
+package com.example.RedisForOrderManagementSystem.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

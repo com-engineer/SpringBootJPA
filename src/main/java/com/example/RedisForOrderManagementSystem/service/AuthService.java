@@ -1,13 +1,15 @@
-package com.example.SpringBootJWT.service;
+package com.example.RedisForOrderManagementSystem.service;
 
-import com.example.SpringBootJWT.dto.CreateUserDto;
-import com.example.SpringBootJWT.dto.LoginDto;
-import com.example.SpringBootJWT.dto.LoginResponseDto;
-import com.example.SpringBootJWT.dto.RegisterUserDto;
-import com.example.SpringBootJWT.entities.Role;
-import com.example.SpringBootJWT.entities.User;
-import com.example.SpringBootJWT.repository.UserRepository;
-import com.example.SpringBootJWT.security.JwtService;
+import com.example.RedisForOrderManagementSystem.dto.CreateUserDto;
+import com.example.RedisForOrderManagementSystem.dto.LoginDto;
+import com.example.RedisForOrderManagementSystem.dto.LoginResponseDto;
+import com.example.RedisForOrderManagementSystem.dto.RegisterUserDto;
+import com.example.RedisForOrderManagementSystem.entities.Role;
+import com.example.RedisForOrderManagementSystem.entities.User;
+import com.example.RedisForOrderManagementSystem.exception.EmailAlreadyExistsException;
+
+import com.example.RedisForOrderManagementSystem.repository.UserRepository;
+import com.example.RedisForOrderManagementSystem.security.JwtService;
 import lombok.AllArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -26,6 +28,9 @@ public class AuthService {
     private final AuthenticationManager authenticationManager;
     private final JwtService jwtService;
     public RegisterUserDto registerUser(CreateUserDto createUserDto){
+        if(userRepository.existsByEmail(createUserDto.getEmail())){
+            throw new EmailAlreadyExistsException("Email is already registered");
+        }
         User user =  new User();
         user.setEmail(createUserDto.getEmail());
         user.setName(createUserDto.getName());
@@ -55,5 +60,6 @@ public class AuthService {
         //debug
 
         return new LoginResponseDto(jwtToken);
+
     }
 }

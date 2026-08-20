@@ -1,4 +1,4 @@
-package com.example.SpringBootJWT.security;
+package com.example.RedisForOrderManagementSystem.security;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -35,6 +35,15 @@ public class SecurityConfig {
 //                This tells Spring:Do not create or use a server-side session to remember the logged-in user.
                 .authorizeHttpRequests(auth ->
                         auth.requestMatchers("/api/v1/auth/**").permitAll()
+
+                                // PRODUCTS — specific paths before wildcards
+                                .requestMatchers(HttpMethod.GET, "/api/v1/products/admin").hasRole("ADMIN")
+                                .requestMatchers(HttpMethod.GET, "/api/v1/products", "/api/v1/products/")
+                                .hasAnyRole("USER", "ADMIN")
+                                .requestMatchers(HttpMethod.GET, "/api/v1/products/*").hasAnyRole("USER", "ADMIN")
+                                .requestMatchers(HttpMethod.POST, "/api/v1/products").hasRole("ADMIN")
+                                .requestMatchers(HttpMethod.PUT, "/api/v1/products/*").hasRole("ADMIN")
+                                .requestMatchers(HttpMethod.DELETE, "/api/v1/products/*").hasRole("ADMIN")
 
                                 //USER
                                 .requestMatchers("/api/v1/users/me").hasRole("USER")

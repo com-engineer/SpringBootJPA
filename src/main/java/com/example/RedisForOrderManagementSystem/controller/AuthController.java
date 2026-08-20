@@ -1,10 +1,12 @@
-package com.example.SpringBootJWT.controller;
+package com.example.RedisForOrderManagementSystem.controller;
 
-import com.example.SpringBootJWT.dto.CreateUserDto;
-import com.example.SpringBootJWT.dto.LoginDto;
-import com.example.SpringBootJWT.dto.LoginResponseDto;
-import com.example.SpringBootJWT.dto.RegisterUserDto;
-import com.example.SpringBootJWT.service.AuthService;
+
+import com.example.RedisForOrderManagementSystem.dto.CreateUserDto;
+import com.example.RedisForOrderManagementSystem.dto.LoginDto;
+import com.example.RedisForOrderManagementSystem.dto.LoginResponseDto;
+import com.example.RedisForOrderManagementSystem.dto.RegisterUserDto;
+import com.example.RedisForOrderManagementSystem.service.AuthService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,11 +22,11 @@ public class AuthController {
     private final AuthService authService;
     @PostMapping("/register")
     //creating user
-    public ResponseEntity<RegisterUserDto>  registerUser(@RequestBody CreateUserDto createUserDto){
+    public ResponseEntity<RegisterUserDto>  registerUser(@Valid @RequestBody CreateUserDto createUserDto){
         return ResponseEntity.status(HttpStatus.CREATED).body(authService.registerUser(createUserDto));
     }
     @PostMapping("/login")
-    public ResponseEntity<LoginResponseDto> login(@RequestBody LoginDto loginDto){
+    public ResponseEntity<LoginResponseDto> login(@Valid @RequestBody LoginDto loginDto){
 
         //debug
         System.out.println("login(@RequestBody: "+loginDto);
@@ -32,5 +34,6 @@ public class AuthController {
 
         return ResponseEntity.status(HttpStatus.OK).body(authService.login(loginDto));
     }
+
 
 }

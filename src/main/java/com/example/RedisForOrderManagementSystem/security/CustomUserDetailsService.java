@@ -1,9 +1,11 @@
-package com.example.SpringBootJWT.security;
+package com.example.RedisForOrderManagementSystem.security;
 
-import com.example.SpringBootJWT.exception.UserNotFoundException;
-import com.example.SpringBootJWT.repository.UserRepository;
+
+import com.example.RedisForOrderManagementSystem.exception.UserNotFoundException;
+import com.example.RedisForOrderManagementSystem.repository.UserRepository;
+import com.example.RedisForOrderManagementSystem.entities.User;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.userdetails.User;
+
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -14,7 +16,7 @@ import org.springframework.stereotype.Service;
 public class CustomUserDetailsService implements UserDetailsService {
     private final UserRepository userRepository;
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException{
-        com.example.SpringBootJWT.entities.User user = userRepository.findByEmail(email)
+        User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new UserNotFoundException("User not found with email: "+ email));
 
         //debug
@@ -22,7 +24,7 @@ public class CustomUserDetailsService implements UserDetailsService {
         System.out.println("email: "+user.getEmail()+" "+"password: "+user.getPassword()+" "+user.getRole()+" "+user.getRole().name());
         //debug
 
-        return User.builder()
+        return org.springframework.security.core.userdetails.User.builder()
                 .username(user.getEmail())
                 .password(user.getPassword())
                 .roles(user.getRole().name())

@@ -1,13 +1,16 @@
-package com.example.SpringBootJWT.service;
+package com.example.RedisForOrderManagementSystem.service;
 
-import com.example.SpringBootJWT.dto.CreateOrderDto;
-import com.example.SpringBootJWT.dto.OrderDto;
-import com.example.SpringBootJWT.dto.UserDto;
-import com.example.SpringBootJWT.entities.Order;
-import com.example.SpringBootJWT.entities.User;
-import com.example.SpringBootJWT.exception.UserNotFoundException;
-import com.example.SpringBootJWT.repository.OrderRepository;
-import com.example.SpringBootJWT.repository.UserRepository;
+
+import com.example.RedisForOrderManagementSystem.dto.CreateOrderDto;
+import com.example.RedisForOrderManagementSystem.dto.OrderDto;
+import com.example.RedisForOrderManagementSystem.dto.UserDto;
+import com.example.RedisForOrderManagementSystem.entities.Order;
+import com.example.RedisForOrderManagementSystem.entities.Product;
+import com.example.RedisForOrderManagementSystem.entities.User;
+import com.example.RedisForOrderManagementSystem.exception.*;
+import com.example.RedisForOrderManagementSystem.repository.OrderRepository;
+import com.example.RedisForOrderManagementSystem.repository.ProductRepository;
+import com.example.RedisForOrderManagementSystem.repository.UserRepository;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -22,6 +25,7 @@ import java.util.Objects;
 public class OrderService {
     private final OrderRepository orderRepository;
     private final UserRepository userRepository;
+    private final ProductRepository productRepository;
 
     private User getLoggedInUser() {
         String email = Objects.requireNonNull(SecurityContextHolder.getContext()
@@ -38,23 +42,27 @@ public class OrderService {
                 .orElseThrow(() -> new UserNotFoundException("User not found"));
     }
 
-    public OrderDto map(Order savedOrder){
-        return new OrderDto(savedOrder.getId(),savedOrder.getProductName(),
-                new UserDto(savedOrder.getUser().getId(),savedOrder.getUser().getName(),savedOrder.getUser().getEmail()));
+    public OrderDto map(Order order){
+        User user = order.getUser();
+        Product product = order.getProduct();
+        return new OrderDto(order.getId(),product.getId(),product.getName(),order.getPriceAtPurchase(),
+                new UserDto(user.getId(),user.getName(),user.getEmail()));
 
     }
 
     @Transactional
     public OrderDto createOrder(CreateOrderDto createOrderDto){
-        /*
-        here Transactional handles to trx first check whether user exist or not then save the
-        created order in the database it ensure atomicity here
-         */
-
         User user = getLoggedInUser();
+        Product product = productRepository.findById(createOrderDto.getProductId())
+                .orElseThrow(() -> new ProductNotFoundException("No product with id " + createOrderDto.getProductId()));
+        //cannot create order if product is not active
+        if(!product.isActive()){
+            throw new ProductInactiveException("Product is not available for ordering");
+        }
         Order order = new Order();
         order.setUser(user);
-        order.setProductName(createOrderDto.getProductName());
+        order.setProduct(product);
+        order.setPriceAtPurchase(product.getPrice());
         Order savedOrder = orderRepository.save(order);
         return map(savedOrder);
     }
@@ -71,10 +79,10 @@ public class OrderService {
     public OrderDto getMyOrder(Long id) {
         User user = getLoggedInUser();
         Order order = orderRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Order not found"));
+                .orElseThrow(() -> new OrderNotFoundException("No order with id " + id));
 
         if(!order.getUser().getId().equals(user.getId())){
-            throw new RuntimeException("Access denied");
+            throw new OrderAccessDeniedException("You do not have access to this order");
         }
 
         return map(order);
@@ -82,6 +90,7 @@ public class OrderService {
     }
 
     public List<OrderDto> getAllOrders() {
+
         List<Order> orders = orderRepository.findAll();
         List<OrderDto> orderDtos = new ArrayList<>();
         for(Order order:orders){
@@ -100,6 +109,8 @@ public class OrderService {
     }
 
     public void deleteOrder(Long id) {
-        orderRepository.deleteById(id);
+        Order order = orderRepository.findById(id)
+                        .orElseThrow(() -> new ProductNotFoundException("No order with id " + id));
+        orderRepository.delete(order);
     }
 }

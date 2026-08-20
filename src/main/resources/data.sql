@@ -1,5 +1,3 @@
-
--- with jwt-1
 -- =========================
 -- USERS (with password + role)
 -- =========================
@@ -40,166 +38,83 @@ SELECT 'Admin', 'admin@example.com',
     SELECT 1 FROM users WHERE email = 'admin@example.com'
 );
 
-
-
 -- =========================
--- ORDERS
+-- PRODUCTS (catalog)
 -- =========================
 
--- Alice -> Keyboard
-INSERT INTO orders (product_name, user_id)
-SELECT 'Keyboard', u.id
+INSERT INTO products (name, price, active)
+SELECT 'Keyboard', 75.00, true
+    WHERE NOT EXISTS (SELECT 1 FROM products WHERE name = 'Keyboard');
+
+INSERT INTO products (name, price, active)
+SELECT 'Mouse', 25.00, true
+    WHERE NOT EXISTS (SELECT 1 FROM products WHERE name = 'Mouse');
+
+INSERT INTO products (name, price, active)
+SELECT 'Laptop', 999.00, true
+    WHERE NOT EXISTS (SELECT 1 FROM products WHERE name = 'Laptop');
+
+INSERT INTO products (name, price, active)
+SELECT 'Monitor', 299.00, true
+    WHERE NOT EXISTS (SELECT 1 FROM products WHERE name = 'Monitor');
+
+INSERT INTO products (name, price, active)
+SELECT 'Headphones', 149.00, true
+    WHERE NOT EXISTS (SELECT 1 FROM products WHERE name = 'Headphones');
+
+-- =========================
+-- ORDERS (product_id + price_at_purchase snapshot)
+-- =========================
+
+-- Alice: Keyboard — snapshot price differs from current catalog (75.00) for demo
+INSERT INTO orders (user_id, product_id, price_at_purchase)
+SELECT u.id, p.id, 65.00
 FROM users u
+         JOIN products p ON p.name = 'Keyboard'
 WHERE u.email = 'alice@example.com'
   AND NOT EXISTS (
-    SELECT 1
-    FROM orders o
-    WHERE o.product_name = 'Keyboard'
-      AND o.user_id = u.id
+    SELECT 1 FROM orders o
+    WHERE o.user_id = u.id AND o.product_id = p.id
 );
 
-
--- Alice -> Mouse
-INSERT INTO orders (product_name, user_id)
-SELECT 'Mouse', u.id
+INSERT INTO orders (user_id, product_id, price_at_purchase)
+SELECT u.id, p.id, p.price
 FROM users u
+         JOIN products p ON p.name = 'Mouse'
 WHERE u.email = 'alice@example.com'
   AND NOT EXISTS (
-    SELECT 1
-    FROM orders o
-    WHERE o.product_name = 'Mouse'
-      AND o.user_id = u.id
+    SELECT 1 FROM orders o
+    WHERE o.user_id = u.id AND o.product_id = p.id
 );
 
-
--- Bob -> Laptop
-INSERT INTO orders (product_name, user_id)
-SELECT 'Laptop', u.id
+-- Bob orders
+INSERT INTO orders (user_id, product_id, price_at_purchase)
+SELECT u.id, p.id, p.price
 FROM users u
+         JOIN products p ON p.name = 'Laptop'
 WHERE u.email = 'bob@example.com'
   AND NOT EXISTS (
-    SELECT 1
-    FROM orders o
-    WHERE o.product_name = 'Laptop'
-      AND o.user_id = u.id
+    SELECT 1 FROM orders o
+    WHERE o.user_id = u.id AND o.product_id = p.id
 );
 
-
--- Bob -> Monitor
-INSERT INTO orders (product_name, user_id)
-SELECT 'Monitor', u.id
+INSERT INTO orders (user_id, product_id, price_at_purchase)
+SELECT u.id, p.id, p.price
 FROM users u
+         JOIN products p ON p.name = 'Monitor'
 WHERE u.email = 'bob@example.com'
   AND NOT EXISTS (
-    SELECT 1
-    FROM orders o
-    WHERE o.product_name = 'Monitor'
-      AND o.user_id = u.id
+    SELECT 1 FROM orders o
+    WHERE o.user_id = u.id AND o.product_id = p.id
 );
 
-
--- Charlie -> Headphones
-INSERT INTO orders (product_name, user_id)
-SELECT 'Headphones', u.id
+-- Charlie orders
+INSERT INTO orders (user_id, product_id, price_at_purchase)
+SELECT u.id, p.id, p.price
 FROM users u
+         JOIN products p ON p.name = 'Headphones'
 WHERE u.email = 'charlie@example.com'
   AND NOT EXISTS (
-    SELECT 1
-    FROM orders o
-    WHERE o.product_name = 'Headphones'
-      AND o.user_id = u.id
+    SELECT 1 FROM orders o
+    WHERE o.user_id = u.id AND o.product_id = p.id
 );
-
-
-
--- -- =========================
---     without jwt
--- -- USERS
--- -- =========================
---
--- INSERT INTO users (name, email)
--- SELECT 'Alice', 'alice@example.com'
---     WHERE NOT EXISTS (
---     SELECT 1 FROM users WHERE email = 'alice@example.com'
--- );
---
--- INSERT INTO users (name, email)
--- SELECT 'Bob', 'bob@example.com'
---     WHERE NOT EXISTS (
---     SELECT 1 FROM users WHERE email = 'bob@example.com'
--- );
---
--- INSERT INTO users (name, email)
--- SELECT 'Charlie', 'charlie@example.com'
---     WHERE NOT EXISTS (
---     SELECT 1 FROM users WHERE email = 'charlie@example.com'
--- );
---
---
--- -- =========================
--- -- ORDERS
--- -- =========================
---
--- -- Alice -> Keyboard
--- INSERT INTO orders (product_name, user_id)
--- SELECT 'Keyboard', u.id
--- FROM users u
--- WHERE u.email = 'alice@example.com'
---   AND NOT EXISTS (
---     SELECT 1
---     FROM orders o
---     WHERE o.product_name = 'Keyboard'
---       AND o.user_id = u.id
--- );
---
---
--- -- Alice -> Mouse
--- INSERT INTO orders (product_name, user_id)
--- SELECT 'Mouse', u.id
--- FROM users u
--- WHERE u.email = 'alice@example.com'
---   AND NOT EXISTS (
---     SELECT 1
---     FROM orders o
---     WHERE o.product_name = 'Mouse'
---       AND o.user_id = u.id
--- );
---
---
--- -- Bob -> Laptop
--- INSERT INTO orders (product_name, user_id)
--- SELECT 'Laptop', u.id
--- FROM users u
--- WHERE u.email = 'bob@example.com'
---   AND NOT EXISTS (
---     SELECT 1
---     FROM orders o
---     WHERE o.product_name = 'Laptop'
---       AND o.user_id = u.id
--- );
---
---
--- -- Bob -> Monitor
--- INSERT INTO orders (product_name, user_id)
--- SELECT 'Monitor', u.id
--- FROM users u
--- WHERE u.email = 'bob@example.com'
---   AND NOT EXISTS (
---     SELECT 1
---     FROM orders o
---     WHERE o.product_name = 'Monitor'
---       AND o.user_id = u.id
--- );
---
---
--- -- Charlie -> Headphones
--- INSERT INTO orders (product_name, user_id)
--- SELECT 'Headphones', u.id
--- FROM users u
--- WHERE u.email = 'charlie@example.com'
---   AND NOT EXISTS (
---     SELECT 1
---     FROM orders o
---     WHERE o.product_name = 'Headphones'
---       AND o.user_id = u.id
--- );

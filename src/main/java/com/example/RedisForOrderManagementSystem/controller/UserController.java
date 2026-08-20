@@ -1,8 +1,9 @@
-package com.example.SpringBootJWT.controller;
+package com.example.RedisForOrderManagementSystem.controller;
 
-import com.example.SpringBootJWT.dto.CreateUserDto;
-import com.example.SpringBootJWT.dto.UserDto;
-import com.example.SpringBootJWT.service.UserService;
+
+import com.example.RedisForOrderManagementSystem.dto.CreateUserDto;
+import com.example.RedisForOrderManagementSystem.dto.UserDto;
+import com.example.RedisForOrderManagementSystem.service.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -51,34 +52,7 @@ public class UserController {
     public ResponseEntity<Void> deleteUser(@PathVariable Long id){
         userService.deleteUser(id);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
-        //        .build()
-        //
-        //which simply means
-        //
-        //"Create the ResponseEntity with the status and headers, but without any body."
+
     }
-
-//    @GetMapping("/users/paginated")
-//    public ResponseEntity<List<UserDto>> getUsersPaginated(@RequestParam int page,@RequestParam int pageSize,
-//                                                           @RequestParam(defaultValue = "asc") String direction,
-//                                                           @RequestParam(defaultValue = "name") String sortBy){
-//        return ResponseEntity.status(HttpStatus.OK).body(userService.getUsersPaginated(page,pageSize,direction,sortBy));
-//    }
-
-
-
-
-//    @PatchMapping("/users/{id}")//PATCH → Update only the fields that have changed.
-//    public ResponseEntity<UserDto> patchUser(@PathVariable Long id,@RequestBody CreateUserDto patchUserDto){
-//        return ResponseEntity.status(HttpStatus.OK).body(userService.patchUser(id,patchUserDto));
-//    }
-
-//    @PutMapping("/users/{id}")
-//    public ResponseEntity<UserDto> updateUser(@PathVariable Long id,@RequestBody CreateUserDto updateUserDto){
-//        return ResponseEntity.status(HttpStatus.OK).body(userService.updateUser(id,updateUserDto));
-//    }
-
-//    get orders for the users
-
 
 }

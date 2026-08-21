@@ -5,7 +5,7 @@ import com.example.RedisForOrderManagementSystem.dto.CreateUserDto;
 import com.example.RedisForOrderManagementSystem.dto.LoginDto;
 import com.example.RedisForOrderManagementSystem.dto.LoginResponseDto;
 import com.example.RedisForOrderManagementSystem.dto.RegisterUserDto;
-import com.example.RedisForOrderManagementSystem.service.AuthService;
+import com.example.RedisForOrderManagementSystem.AuthService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;

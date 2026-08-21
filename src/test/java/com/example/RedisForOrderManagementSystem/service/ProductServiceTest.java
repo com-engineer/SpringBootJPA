@@ -1,12 +1,12 @@
 package com.example.RedisForOrderManagementSystem.service;
 
+import com.example.RedisForOrderManagementSystem.ProductService;
 import com.example.RedisForOrderManagementSystem.dto.ProductDto;
 import com.example.RedisForOrderManagementSystem.dto.ProductRequestDto;
 import com.example.RedisForOrderManagementSystem.entities.Product;
 import com.example.RedisForOrderManagementSystem.exception.DuplicateProductNameException;
 import com.example.RedisForOrderManagementSystem.exception.ProductNotFoundException;
 import com.example.RedisForOrderManagementSystem.repository.ProductRepository;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -19,7 +19,6 @@ import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)

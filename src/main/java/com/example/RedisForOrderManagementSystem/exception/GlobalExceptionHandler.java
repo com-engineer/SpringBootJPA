@@ -53,5 +53,11 @@ public class GlobalExceptionHandler {
 //                body(new ErrorResponseDto("INVALID_INPUT",ex.getBindingResult().getFieldErrors().toString()));
     }
 
+    @ExceptionHandler(EmailAlreadyExistsException.class)
+    public ResponseEntity<ErrorResponseDto> handleEmailAlreadyExistsException(EmailAlreadyExistsException ex) {
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(new ErrorResponseDto(
+                "EMAIL_ALREADY_EXISTS", ex.getMessage()
+        ));
+    }
 
 }

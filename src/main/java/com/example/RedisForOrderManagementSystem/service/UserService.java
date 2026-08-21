@@ -1,4 +1,4 @@
-package com.example.RedisForOrderManagementSystem;
+package com.example.RedisForOrderManagementSystem.service;
 
 
 import com.example.RedisForOrderManagementSystem.dto.CreateUserDto;
@@ -16,7 +16,6 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 

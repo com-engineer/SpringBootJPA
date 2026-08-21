@@ -1,4 +1,4 @@
-package com.example.RedisForOrderManagementSystem;
+package com.example.RedisForOrderManagementSystem.service;
 
 import com.example.RedisForOrderManagementSystem.dto.CreateUserDto;
 import com.example.RedisForOrderManagementSystem.dto.LoginDto;

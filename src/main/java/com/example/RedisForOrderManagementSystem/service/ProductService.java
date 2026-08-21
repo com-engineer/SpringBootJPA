@@ -1,9 +1,8 @@
-package com.example.RedisForOrderManagementSystem;
+package com.example.RedisForOrderManagementSystem.service;
 
 import com.example.RedisForOrderManagementSystem.dto.ProductDto;
 import com.example.RedisForOrderManagementSystem.dto.ProductRequestDto;
 import com.example.RedisForOrderManagementSystem.entities.Product;
-import com.example.RedisForOrderManagementSystem.entities.User;
 import com.example.RedisForOrderManagementSystem.exception.DuplicateProductNameException;
 import com.example.RedisForOrderManagementSystem.exception.ProductNotFoundException;
 import com.example.RedisForOrderManagementSystem.repository.ProductRepository;

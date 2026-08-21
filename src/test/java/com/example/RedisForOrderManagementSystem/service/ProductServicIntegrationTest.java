@@ -1,7 +1,6 @@
 package com.example.RedisForOrderManagementSystem.service;
 
 import com.example.RedisForOrderManagementSystem.AbstractIntegrationTest;
-import com.example.RedisForOrderManagementSystem.ProductService;
 import com.example.RedisForOrderManagementSystem.dto.ProductDto;
 import com.example.RedisForOrderManagementSystem.dto.ProductRequestDto;
 import com.example.RedisForOrderManagementSystem.entities.Product;

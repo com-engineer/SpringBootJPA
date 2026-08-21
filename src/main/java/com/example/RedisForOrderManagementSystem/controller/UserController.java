@@ -3,7 +3,7 @@ package com.example.RedisForOrderManagementSystem.controller;
 
 import com.example.RedisForOrderManagementSystem.dto.CreateUserDto;
 import com.example.RedisForOrderManagementSystem.dto.UserDto;
-import com.example.RedisForOrderManagementSystem.UserService;
+import com.example.RedisForOrderManagementSystem.service.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

@@ -1,0 +1,62 @@
+package com.example.product.exception;
+
+import com.example.product.dto.ErrorResponseDto;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
+
+@RestControllerAdvice
+public class GlobalExceptionHandler {
+
+    @ExceptionHandler(ProductNotFoundException.class)
+    public ResponseEntity<ErrorResponseDto> handleProductNotFoundException(ProductNotFoundException ex){
+        return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                .body(new ErrorResponseDto("PRODUCT_NOT_FOUND", ex.getMessage()));
+    }
+
+    @ExceptionHandler(DuplicateProductNameException.class)
+    public ResponseEntity<ErrorResponseDto> handleDuplicateProductNameException(DuplicateProductNameException ex){
+        return ResponseEntity.status(HttpStatus.CONFLICT)
+                .body(new ErrorResponseDto("DUPLICATE_PRODUCT_NAME", ex.getMessage()));
+    }
+    /*
+
+@Slf4j
+@RestControllerAdvice
+public class GlobalExceptionHandler {
+
+
+    @ExceptionHandler(AccessDeniedException.class)
+    public ResponseEntity<ErrorResponseDto> handleAccessDeniedException(AccessDeniedException ignored) {
+        return ResponseEntity.status(HttpStatus.FORBIDDEN)
+                .body(new ErrorResponseDto("ACCESS_DENIED", "You are not allowed to perform this action"));
+    }
+
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<ErrorResponseDto> handleMethodArgumentNotValidException(MethodArgumentNotValidException ex) {
+        HashMap<String, String> fieldErrors = new HashMap<>();
+        ex.getBindingResult().getFieldErrors()
+                .forEach(error -> fieldErrors.put(error.getField(), error.getDefaultMessage()));
+        StringBuilder errorMsg = new StringBuilder();
+        boolean isFirst = true;
+        for (String field : fieldErrors.keySet()) {
+            if (!isFirst) {
+                errorMsg.append(", ");
+            }
+            isFirst = false;
+            errorMsg.append(field).append(" : ").append(fieldErrors.get(field));
+        }
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .body(new ErrorResponseDto("INVALID_INPUT", errorMsg.toString()));
+    }
+
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<ErrorResponseDto> handleGenericException(Exception ex) {
+        log.error("Unhandled exception", ex);
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .body(new ErrorResponseDto("INTERNAL_ERROR", "An unexpected error occurred"));
+    }
+}
+     */
+}

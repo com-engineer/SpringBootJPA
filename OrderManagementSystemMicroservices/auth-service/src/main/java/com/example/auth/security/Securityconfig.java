@@ -27,7 +27,7 @@ public class Securityconfig {
                 .sessionManagement(s -> s.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/api/v1/auth/**").permitAll()
-                                .requestMatchers("api/v1/users/me").hasRole("USER")
+                                .requestMatchers("/api/v1/users/me").hasRole("USER")
                                 .requestMatchers("/api/v1/users/**").hasRole("ADMIN")
                                 .anyRequest().authenticated())
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
@@ -40,15 +40,9 @@ public class Securityconfig {
         return new BCryptPasswordEncoder();
     }
 
+    @Bean
     AuthenticationManager authenticationManager(AuthenticationConfiguration authConfig){
         return authConfig.getAuthenticationManager();
     }
-    /*
 
-    @Bean
-    AuthenticationManager authenticationManager(AuthenticationConfiguration authConfig) {
-        return authConfig.getAuthenticationManager();
-    }
-}
-     */
 }

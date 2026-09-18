@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface OrderRepository extends JpaRepository<Order,Long> {
 
-    List<Order> findAllByEmail(String email);
+//    List<Order> findAllByUserEmailIgnoreCase(String email);
 
     List<Order> findByUserId(Long id);
 }

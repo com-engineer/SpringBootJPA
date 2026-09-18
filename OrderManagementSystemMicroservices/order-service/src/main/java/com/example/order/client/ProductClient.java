@@ -13,7 +13,7 @@ import org.springframework.web.client.RestClient;
 @RequiredArgsConstructor
 public class ProductClient {
 
-    private RestClient productRestClient;
+    private final RestClient productRestClient;
 
     public ProductDto getProduct(@NotNull(message = "ProductId is required") Long productId, Object bearerToken) {
 

@@ -45,15 +45,22 @@ public class AuthService {
     }
 
     public LoginResponseDto login(@Valid LoginDto loginDto) {
+        //debug
+        System.out.println("EMAIL = " + loginDto.getEmail());
+        //debug
         Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(loginDto.getPassword(),loginDto.getEmail())
+                new UsernamePasswordAuthenticationToken(loginDto.getEmail(),loginDto.getPassword())
         );
+
+
 
         String email = authentication.getName();
 
         User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new UserNotFoundException("User not found after authentication"));
-
+        //debug
+        System.out.println("USER FOUND = " + (user != null));
+        //debug
         return new LoginResponseDto(jwtService. getJwtToken(user));
     }
 }

@@ -9,7 +9,7 @@ import java.util.List;
 
 public interface ProductRepository extends JpaRepository<Product,Long> {
 
-    List<Product> findAllProductActiveTrueOrderByNameAsc();
+    List<Product> findAllByActiveTrueOrderByNameAsc();
 
     boolean existsByNameIgnoreCase(String name);
 

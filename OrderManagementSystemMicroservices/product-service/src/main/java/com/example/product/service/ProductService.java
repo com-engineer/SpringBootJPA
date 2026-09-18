@@ -37,7 +37,7 @@ public class ProductService {
 
     public List<ProductResponseDto> getActiveCatalog() {
 
-        List<Product> product = productRepository.findAllProductActiveTrueOrderByNameAsc();
+        List<Product> product = productRepository.findAllByActiveTrueOrderByNameAsc();
 
         return product.stream()
                 .map(this::map)

@@ -76,8 +76,15 @@ public class OrderService {
     public List<OrderResponseDto> getMyOrders() {
         JwtPrincipal principal = getLoggedInPrincipal();
         String email = principal.email();
-        List<Order> orders = orderRepository.findAllByEmail(email);
-
+        //debug
+        System.out.println(email);
+        //debug
+        List<Order> orders = orderRepository.findByUserId(principal.userId());
+//        List<Order> orders = orderRepository.findAllByUserEmailIgnoreCase(email.trim());
+        //debug
+        System.out.println((orderRepository.findByUserId(principal.userId())).size());
+        System.out.println(orders.size());
+        //debug
         return orders.stream()
                 .map(this::map)
                 .toList();

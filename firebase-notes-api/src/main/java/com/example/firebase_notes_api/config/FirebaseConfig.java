@@ -1,4 +1,4 @@
-package com.example.firebase_notes_api;
+package com.example.firebase_notes_api.config;
 
 import com.google.auth.oauth2.GoogleCredentials;
 import com.google.firebase.FirebaseApp;

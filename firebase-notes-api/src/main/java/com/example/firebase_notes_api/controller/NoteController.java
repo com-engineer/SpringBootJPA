@@ -20,30 +20,29 @@ public class NoteController {
     private final NoteService noteService;
 
     @PostMapping
-    public ResponseEntity<NoteResponseDto> createNote(@Valid @RequestBody CreateNotesDto dto) throws ExecutionException, InterruptedException {
+    public ResponseEntity<NoteResponseDto> createNote(@Valid @RequestBody CreateNotesDto dto){
         return ResponseEntity.status(HttpStatus.CREATED).body(
                 noteService.createNote(dto));
     }
 
     @GetMapping
-    public ResponseEntity<List<NoteResponseDto>> getAllNotes()
-            throws Exception {
+    public ResponseEntity<List<NoteResponseDto>> getAllNotes() {
 
         return ResponseEntity.ok(noteService.getAllNotes());
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<NoteResponseDto> getNote(@PathVariable String id) throws ExecutionException, InterruptedException {
+    public ResponseEntity<NoteResponseDto> getNote(@PathVariable String id) {
         return ResponseEntity.status(HttpStatus.OK).body(noteService.getNote(id));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<NoteResponseDto> updateNote(@PathVariable String id,@Valid @RequestBody CreateNotesDto dto) throws ExecutionException, InterruptedException {
+    public ResponseEntity<NoteResponseDto> updateNote(@PathVariable String id,@Valid @RequestBody CreateNotesDto dto) {
         return ResponseEntity.status(HttpStatus.OK).body(noteService.updateNote(id,dto));
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteNote(@PathVariable String id) throws ExecutionException, InterruptedException {
+    public ResponseEntity<Void> deleteNote(@PathVariable String id) {
         noteService.deleteNote(id);
         return ResponseEntity.noContent().build();
     }
